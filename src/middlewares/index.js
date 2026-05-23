@@ -88,7 +88,7 @@ module.exports = {
     corsMiddleware,
     requestIdAndTimestamp,
     loggerMiddleware,
-    rateLimitterMiddleware,
+    // rateLimitterMiddleware, // disable due to deploying error
     cookieParserMiddleware,
     bodyParserMiddleware,
     expressJsonMiddleware,
