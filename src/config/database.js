@@ -18,9 +18,10 @@ const {
   DB_DIALECT_PRODUCTION,
   DB_PORT_PRODUCTION,
   DB_URL_PRODUCTION,
+  NODE_ENV,
+  DB_URL_RAILWAY,
 } = process.env;
-
-console.log({ DB_URL_PRODUCTION, DB_USERNAME_PRODUCTION, DB_HOST_PRODUCTION, DB_PORT_PRODUCTION });
+console.log({ DB_URL_PRODUCTION, DB_USERNAME_PRODUCTION, DB_HOST_PRODUCTION, DB_PORT_PRODUCTION, NODE_ENV, DB_URL_RAILWAY });
 
 module.exports = {
   local: {
@@ -67,7 +68,7 @@ module.exports = {
     // password: DB_PASSWORD_PRODUCTION,
     // database: DB_NAME_PRODUCTION,
     // host: DB_HOST_PRODUCTION,
-    port: DB_PORT_PRODUCTION,
+    // port: DB_PORT_PRODUCTION,
     use_env_variable: DB_URL_PRODUCTION,
     dialect: DB_DIALECT_PRODUCTION,
     define: {
