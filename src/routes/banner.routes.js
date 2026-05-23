@@ -1,8 +1,7 @@
 const express = require("express");
+const bannerController = require("../controllers/banner.controller");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  return res.status(200).json({ status: 0 });
-});
+router.get("/", bannerController.getBanners);
 
 module.exports = router;

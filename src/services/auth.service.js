@@ -4,6 +4,7 @@ const { compare, hash } = require("../lib/bcrypt");
 const { sign, verify } = require("../lib/jwt");
 const { startTransaction, commitTransaction, rollbackTransaction } = require("../repositories/base.repository");
 const userRepository = require("../repositories/user.repository");
+const transactionRepository = require("../repositories/transaction.repository");
 
 const login = async (payload) => {
   const transaction = await startTransaction();
@@ -53,7 +54,7 @@ const registration = async (payload) => {
     const hashedPassword = await hash(payload.password);
 
     // insert user baru
-    await userRepository.createNewUser(
+    const newUser = await userRepository.createNewUser(
       {
         email: payload.email,
         role: USER_ROLE.member,
@@ -67,6 +68,9 @@ const registration = async (payload) => {
         transaction,
       },
     );
+
+    // create user balances
+    await transactionRepository.createNewUserBalances(newUser.id, { transaction });
 
     await commitTransaction(transaction);
     return null;

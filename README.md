@@ -1,92 +1,45 @@
 # SIMS PPOB
 
-API service untuk manajemen member, transaksi, banner, dan layanan PPOB.
+Backend API PPOB untuk member, banner, layanan, saldo, top-up, dan transaksi.
 
-## Teknologi
+## Ringkas
 
-- Node.js
-- Express
-- Sequelize ORM
-- PostgreSQL
-- Joi untuk validasi input
-- JWT untuk autentikasi
-- Bcrypt untuk hashing password
-- Pino untuk logging
-- Helmet, CORS, dan rate limiting untuk keamanan
+- `Node.js`, `Express`, `Sequelize`
+- PostgreSQL sebagai database
+- JWT untuk autentikasi member
+- Multer untuk upload foto profil
+- Validasi input dengan Joi
 
-## Struktur Proyek
+## Struktur Utama
 
-- `src/server.js` - entry point server
-- `src/app.js` - konfigurasi Express dan rute
-- `src/models/` - definisi Sequelize models
+- `src/server.js` - server bootstrap
+- `src/app.js` - konfigurasi Express dan middleware
+- `src/routes/` - daftar route
+- `src/controllers/` - logika request handler
+- `src/services/` - logika bisnis
+- `src/repositories/` - query database
+- `src/models/` - definisi model Sequelize
 - `src/migrations/` - migrasi database
-- `src/seeders/` - data awal untuk database
-- `src/routes/` - endpoint routes
-- `src/controllers/` - controller logic
-- `src/services/` - service/business logic
-- `src/repositories/` - query/database access layer
-- `src/config/` - konfigurasi database dan logger
-- `src/middlewares/` - middleware request handling
-- `src/validations/` - skema validasi input
+- `src/validations/` - skema request validation
 
-## Instalasi
+## Installasi
 
-1. Clone repositori:
-   ```bash
-   git clone <repo-url>
-   cd sims-ppob
-   ```
-2. Install dependensi:
-   ```bash
-   npm install
-   ```
-3. Buat file `.env` di root dan isi variabel lingkungan.
-
-## Variabel Lingkungan
-
-Isi file `.env` dengan variabel berikut:
-
-```env
-PORT=3000
-
-# Local database
-DB_HOST_LOCAL=localhost
-DB_NAME_LOCAL=sims_ppob_local
-DB_USERNAME_LOCAL=postgres
-DB_PASSWORD_LOCAL=secret
-DB_DIALECT_LOCAL=postgres
-
-# Development database
-DB_HOST_DEVELOPMENT=localhost
-DB_NAME_DEVELOPMENT=sims_ppob_dev
-DB_USERNAME_DEVELOPMENT=postgres
-DB_PASSWORD_DEVELOPMENT=secret
-DB_DIALECT_DEVELOPMENT=postgres
-
-# Production database
-DB_HOST_PRODUCTION=localhost
-DB_NAME_PRODUCTION=sims_ppob_prod
-DB_USERNAME_PRODUCTION=postgres
-DB_PASSWORD_PRODUCTION=secret
-DB_DIALECT_PRODUCTION=postgres
-
-# Autentikasi
-JWT_SECRET_KEY=your_jwt_secret
-HASH_SALT=10
+```bash
+git clone <repo-url>
+cd sims-ppob
+npm install
 ```
 
-> `NODE_ENV` digunakan untuk memilih konfigurasi database. Default adalah `development`.
+Buat file `.env` dengan konfigurasi database dan `JWT_SECRET_KEY`.
 
 ## Database
-
-Jalankan perintah berikut untuk membuat dan memigrasi database:
 
 ```bash
 npm run db:create
 npm run db:migrate
 ```
 
-Jika Anda ingin menambahkan migrasi atau seed baru:
+Untuk migrasi atau seed baru:
 
 ```bash
 npm run db:g:migration -- <nama_migrasi>
@@ -94,54 +47,44 @@ npm run db:g:seed -- <nama_seeder>
 npm run db:seeds
 ```
 
-## Menjalankan Server
+## Jalankan Server
 
-- Development mode:
-  ```bash
-  npm run dev
-  ```
-- Production mode:
-  ```bash
-  npm start
-  ```
+```bash
+npm run dev
+```
 
-Server akan berjalan di `http://localhost:3000` kecuali jika `PORT` diubah.
+## Endpoint Utama
 
-## Endpoint API
+### Autentikasi
 
-### Auth
+- `POST /registration`
+- `POST /login`
 
-- `POST /registration` - registrasi member baru
-- `POST /login` - login member
+### Profile (dengan auth)
 
-### Profile
+- `GET /profile`
+- `PUT /profile/update`
+- `PUT /profile/image`
 
-- `GET /profile/` - ambil data profil
-- `PUT /profile/update` - update profil
-- `PUT /profile/image` - upload/ubah foto profil
+### Banner (dengan auth)
 
-### Banner
+- `GET /banner`
 
-- `GET /banner` - daftar banner
+### Services (dengan auth)
 
-### Services
+- `GET /services`
 
-- `GET /services` - daftar layanan
+### Transaksi (dengan auth)
 
-### Transaksi
+- `GET /balance`
+- `POST /topup`
+- `POST /transaction`
+- `GET /transaction/history`
 
-- `GET /balance` - cek saldo
-- `POST /topup` - top up saldo
-- `POST /transaction` - buat transaksi
-- `GET /transaction/history` - riwayat transaksi
+## Catatan
 
-> Saat ini beberapa route utama masih menggunakan response placeholder `{ status: 0 }`.
-
-## Tips
-
-- Pastikan koneksi database telah benar sebelum menjalankan `npm run dev`.
-- Gunakan `NODE_ENV=local` atau `NODE_ENV=development` sesuai lingkungan.
-- Periksa file `src/config/database.js` untuk penyesuaian konfigurasi Sequelize.
+- Upload foto profil disimpan di `public/profile-images`
+- Semua endpoint protected memerlukan JWT dan role `member`
 
 ## Lisensi
 

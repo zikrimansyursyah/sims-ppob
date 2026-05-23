@@ -24,7 +24,6 @@ const validate =
 
       next();
     } catch (error) {
-      console.log("heres");
       next(error);
     }
   };

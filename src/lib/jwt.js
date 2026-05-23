@@ -11,7 +11,11 @@ function sign(token, isLongTime = false) {
 }
 
 function verify(token) {
-  return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  try {
+    return jwt.verify(token, process.env.JWT_SECRET_KEY);
+  } catch {
+    return null;
+  }
 }
 
 module.exports = {

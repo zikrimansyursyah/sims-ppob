@@ -9,6 +9,7 @@ const { randomUUID } = require("crypto");
 const { RESPONSE_STATUS, HTTP_STATUS } = require("../config/constants");
 const { formatDuration } = require("../lib/date");
 const logger = require("../config/logger");
+const { maxFileSizeOnMB } = require("./file-upload");
 
 const helmetMiddleware = helmet({ contentSecurityPolicy: false });
 
@@ -53,8 +54,14 @@ const expressJsonMiddleware = express.json();
 const expressUrlEncodedMiddleware = express.urlencoded({ extended: true });
 
 const onErrorMiddleware = (err, req, res, next) => {
-  const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_ERROR;
-  const appStatus = err.appStatus || RESPONSE_STATUS.INTERNAL_SERVER_ERROR;
+  let statusCode = err.statusCode || HTTP_STATUS.INTERNAL_ERROR;
+  let appStatus = err.appStatus || RESPONSE_STATUS.INTERNAL_SERVER_ERROR;
+
+  if (err.code === "LIMIT_FILE_SIZE") {
+    statusCode = HTTP_STATUS.VALIDATION_ERROR;
+    appStatus = RESPONSE_STATUS.INVALID_PARAMETERS;
+    err.message = `File maksimal ${maxFileSizeOnMB}MB`;
+  }
 
   if (err.statusCode === undefined || err.statusCode === HTTP_STATUS.INTERNAL_ERROR) {
     logger.error(err);
