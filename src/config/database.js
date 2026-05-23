@@ -16,6 +16,7 @@ const {
   DB_USERNAME_PRODUCTION,
   DB_PASSWORD_PRODUCTION,
   DB_DIALECT_PRODUCTION,
+  DB_URL_PRODUCTION,
 } = process.env;
 
 module.exports = {
@@ -59,10 +60,11 @@ module.exports = {
     },
   },
   production: {
-    username: DB_USERNAME_PRODUCTION,
-    password: DB_PASSWORD_PRODUCTION,
-    database: DB_NAME_PRODUCTION,
-    host: DB_HOST_PRODUCTION,
+    // username: DB_USERNAME_PRODUCTION,
+    // password: DB_PASSWORD_PRODUCTION,
+    // database: DB_NAME_PRODUCTION,
+    // host: DB_HOST_PRODUCTION,
+    use_env_variable: DB_URL_PRODUCTION,
     dialect: DB_DIALECT_PRODUCTION,
     define: {
       timestamps: false,
